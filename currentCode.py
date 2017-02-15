@@ -4,7 +4,7 @@ conn = sqlite3.connect('inventoryStock.db')
 c = conn.cursor()
 
 # Create table as the program starts to execute
-c.execute("CREATE TABLE inventoryStocK (Name TEXT, ID INTEGER, Description TEXT, Price INTEGER, DateAdded TEXT, Status boolean )")  
+c.execute("CREATE TABLE inventoryStock (Name TEXT, ID INTEGER, Description TEXT, Price INTEGER, DateAdded TEXT, Status boolean )")  
 
 class B(object):
     def __init__(self):
@@ -19,7 +19,7 @@ class B(object):
         DateAdded = input('Date when Device Arrived at Store:')
         Status = False
         ID = int(input('Device ID:'))
-        c.execute("INSERT INTO inventoryStocK VALUES (?,?,?,?,?,?)", (Name, Description, Price, DateAdded, Status, ID))
+        c.execute("INSERT INTO inventoryStock VALUES (?,?,?,?,?,?)", (Name, Description, Price, DateAdded, Status, ID))
 
         conn.commit()
 
@@ -27,10 +27,10 @@ class B(object):
     def removeItem(self):
         itemToRemove = input('enter an item u want to delete:')
     if itemToRemove is not '':
-        itemInCharge = c.execute('SELECT * FROM inventory WHERE Name=(?)', (itemToRemove,))
+        itemInCharge = c.execute('SELECT * FROM inventoryStock WHERE Name=(?)', (itemToRemove,))
         finalID = itemInCharge.fetchone()
         IdToItem = finalID[5]
-        c.execute("DELETE FROM inventory WHERE ID=(?)", (IdToItem,))
+        c.execute("DELETE FROM inventoryStock WHERE ID=(?)", (IdToItem,))
         conn.commit() 
         print( 'you have deleted %s' % (itemToRemove))
     else:
@@ -40,7 +40,7 @@ class B(object):
 
 
     def listAllRemainingStock(self):  # done
-        remainingStockObject = c.execute('SELECT * FROM inventories')
+        remainingStockObject = c.execute('SELECT * FROM inventoryStock')
         remainingStock = remainingStockObject.fetchone()
         print(remainingStock)    
 
@@ -48,7 +48,7 @@ class B(object):
     def itemViewId(self):
         idToSearchFor = input('enter an ID you would like to search for:')
         if idToSearchFor is not '':
-            allItemsWithIDObject = c.execute('SELECT * FROM inventoryStocK WHERE ID=(?)', (idToSearchFor,))
+            allItemsWithIDObject = c.execute('SELECT * FROM inventoryStock WHERE ID=(?)', (idToSearchFor,))
             allItemsWithID = allItemsWithIDObject.fetchone()
             print(allItemsWithID)
                   
@@ -61,6 +61,6 @@ class B(object):
 
 
 def assetValueOfInventory(self):
-    priceList = c.execute('SELECT Price FROM inventorySto')
+    priceList = c.execute('SELECT Price FROM inventoryStock')
     totalAssetValue = sum(priceList.fetchone())
     print(totalAssetValue)       
