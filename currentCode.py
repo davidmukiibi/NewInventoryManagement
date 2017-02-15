@@ -62,7 +62,6 @@ class B(object):
 
     def assetValueOfInventory(self):
         priceList = []
-        actualPriceList = []
         priceListObject = c.execute('SELECT Price FROM inventoryStock')
         priceListValues = priceListObject.fetchall()
         for i in priceListValues:
