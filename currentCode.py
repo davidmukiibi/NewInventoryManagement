@@ -60,7 +60,7 @@ class B(object):
             self.itemViewId()
 
 
-def assetValueOfInventory(self):
-    priceList = c.execute('SELECT Price FROM inventoryStock')
-    totalAssetValue = sum(priceList.fetchone())
-    print(totalAssetValue)       
+    def assetValueOfInventory(self):
+        priceList = c.execute('SELECT Price FROM inventoryStock')
+        totalAssetValue = sum(priceList.fetchone())
+        print(totalAssetValue)       
