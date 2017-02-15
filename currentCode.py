@@ -21,3 +21,17 @@ class B(object):
         c.execute("INSERT INTO inventoryStocK VALUES (?,?,?,?,?,?)", (Name, Description, Price, DateAdded, Status, ID))
 
         conn.commit()
+
+
+        def removeItem(self):
+        itemToRemove = input('enter an item u want to delete:')
+        if itemToRemove is not '':
+            itemInCharge = c.execute('SELECT * FROM inventory WHERE Name=(?)', (itemToRemove,))
+            finalID = itemInCharge.fetchone()
+            IdToItem = finalID[5]
+            c.execute("DELETE FROM inventory WHERE ID=(?)", (IdToItem,))
+            conn.commit() 
+            print( 'you have deleted %s' % (itemToRemove))
+        else:
+            print('Please provide an item to delete and try again!')
+            self.removeItem()
