@@ -41,7 +41,7 @@ class B(object):
 
     def listAllRemainingStock(self):  # done
         remainingStockObject = c.execute('SELECT * FROM inventoryStock')
-        remainingStock = remainingStockObject.fetchone()
+        remainingStock = remainingStockObject.fetchall()
         print(remainingStock)    
 
 
@@ -49,7 +49,7 @@ class B(object):
         idToSearchFor = input('enter an ID you would like to search for:')
         if idToSearchFor is not '':
             allItemsWithIDObject = c.execute('SELECT * FROM inventoryStock WHERE ID=(?)', (idToSearchFor,))
-            allItemsWithID = allItemsWithIDObject.fetchone()
+            allItemsWithID = allItemsWithIDObject.fetchall()
             print(allItemsWithID)
                   
         elif idToSearchFor is 'X' or idToSearchFor is 'x':
@@ -61,6 +61,13 @@ class B(object):
 
 
     def assetValueOfInventory(self):
-        priceList = c.execute('SELECT Price FROM inventoryStock')
-        totalAssetValue = sum(priceList.fetchone())
-        print(totalAssetValue)       
+        priceList = []
+        actualPriceList = []
+        priceListObject = c.execute('SELECT Price FROM inventoryStock')
+        priceListValues = priceListObject.fetchall()
+        for i in priceListValues:
+          j = i[0]
+          priceList.append(j)
+        total = sum(priceList)
+        print(total)
+       
