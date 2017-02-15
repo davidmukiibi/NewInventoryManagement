@@ -24,22 +24,37 @@ class B(object):
         conn.commit()
 
 
-        def removeItem(self):
+    def removeItem(self):
         itemToRemove = input('enter an item u want to delete:')
-        if itemToRemove is not '':
-            itemInCharge = c.execute('SELECT * FROM inventory WHERE Name=(?)', (itemToRemove,))
-            finalID = itemInCharge.fetchone()
-            IdToItem = finalID[5]
-            c.execute("DELETE FROM inventory WHERE ID=(?)", (IdToItem,))
-            conn.commit() 
-            print( 'you have deleted %s' % (itemToRemove))
+    if itemToRemove is not '':
+        itemInCharge = c.execute('SELECT * FROM inventory WHERE Name=(?)', (itemToRemove,))
+        finalID = itemInCharge.fetchone()
+        IdToItem = finalID[5]
+        c.execute("DELETE FROM inventory WHERE ID=(?)", (IdToItem,))
+        conn.commit() 
+        print( 'you have deleted %s' % (itemToRemove))
+    else:
+        print('Please provide an item to delete and try again!')
+        self.removeItem()
+
+
+
+    def listAllRemainingStock(self):  # done
+        remainingStockObject = c.execute('SELECT * FROM inventories')
+        remainingStock = remainingStockObject.fetchone()
+        print(remainingStock)    
+
+
+    def itemViewId(self):
+        idToSearchFor = input('enter an ID you would like to search for:')
+        if idToSearchFor is not '':
+            allItemsWithIDObject = c.execute('SELECT * FROM inventoryStocK WHERE ID=(?)', (idToSearchFor,))
+            allItemsWithID = allItemsWithIDObject.fetchone()
+            print(allItemsWithID)
+                  
+        elif idToSearchFor is 'X' or idToSearchFor is 'x':
+            print('bye')
+    
         else:
-            print('Please provide an item to delete and try again!')
-            self.removeItem()
-
-
-
-        def listAllRemainingStock(self):  # done
-            remainingStockObject = c.execute('SELECT * FROM inventories')
-            remainingStock = remainingStockObject.fetchone()
-            print(remainingStock)    
+            print('Please type in an ID whose items you want to see and press enter')
+            self.itemViewId()
