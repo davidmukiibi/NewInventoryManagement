@@ -3,15 +3,16 @@ import sqlite3
 conn = sqlite3.connect('inventoryStock.db')
 c = conn.cursor()
 
+# Create table as the program starts to execute
+c.execute("CREATE TABLE inventoryStocK (Name TEXT, ID INTEGER, Description TEXT, Price INTEGER, DateAdded TEXT, Status boolean )")  
 
 class B(object):
     def __init__(self):
       pass
-
+    
     def addItem(self):  # done
 
-        # Create table
-        c.execute("CREATE TABLE inventoryStocK (Name TEXT, ID INTEGER, Description TEXT, Price INTEGER, DateAdded TEXT, Status boolean )")
+        
         Name = input('Enter the gadget name:')
         Description = input('Enter The Description of the Device:')
         Price = int(input('Enter The Price of the Device:'))
@@ -35,3 +36,10 @@ class B(object):
         else:
             print('Please provide an item to delete and try again!')
             self.removeItem()
+
+
+
+        def listAllRemainingStock(self):  # done
+            remainingStockObject = c.execute('SELECT * FROM inventories')
+            remainingStock = remainingStockObject.fetchone()
+            print(remainingStock)    
