@@ -58,3 +58,9 @@ class B(object):
         else:
             print('Please type in an ID whose items you want to see and press enter')
             self.itemViewId()
+
+
+def assetValueOfInventory(self):
+    priceList = c.execute('SELECT Price FROM inventorySto')
+    totalAssetValue = sum(priceList.fetchone())
+    print(totalAssetValue)       
