@@ -98,5 +98,15 @@ class B(object):
         c.execute("UPDATE inventoryStock SET checkOutTrackerCount = (?) WHERE Name = (?)", (self.check_out_count, check_out_item))
 
 
-conn.close( )
+
+      def search(self, item_to_search):
+        search_result_object = c.execute("SELECT * FROM inventoryStock WHERE Name = (?)", (item_to_search,)) 
+        search_result = search_result_object.fetchall()
+        print('These are the items in the inventory that match your search string')
+        for k,results in enumerate(search_result): 
+            print ('%d. %s' % (k+1, results)) 
+
+
         
+
+  
