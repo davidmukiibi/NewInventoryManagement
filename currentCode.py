@@ -87,7 +87,10 @@ class B(object):
         print(total) 
          
          
-      def check_in(self, check_in_item): 
+      def check_in(self, check_in_item_id):
+        check_in_item_object = c.execute("SELECT Name FROM inventoryStock WHERE ID = (?)", (check_in_item_id,))
+        check_in_item_result = check_in_item_object.fetchall()
+        check_in_item = check_in_item_result[0][0]
         status = False 
         c.execute("UPDATE inventoryStock SET Status = (?) WHERE Name = (?)", (status, check_in_item)) 
         self.check_in_count += 1 
@@ -95,7 +98,10 @@ class B(object):
 
  
  
-      def check_out(self, check_out_item): 
+      def check_out(self, check_out_item_id): 
+        check_out_item_object = c.execute("SELECT Name FROM inventoryStock WHERE ID = (?)", (check_out_item_id,))
+        check_out_item_result = check_out_item_object.fetchall()
+        check_out_item = check_out_item_result[0][0]
         status = True 
         c.execute("UPDATE inventoryStock SET Status = (?) WHERE Name = (?)", (status, check_out_item)) 
         self.check_out_count += 1 
