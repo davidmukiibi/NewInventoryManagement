@@ -24,7 +24,7 @@ class B(object):
           item_id = int(input('Device ID:')) 
           self.check_in_count += 1 
           self.check_out_count = 0 
-          status = True 
+          status = False
           c.execute("INSERT INTO inventoryStock VALUES (?,?,?,?,?,?,?,?)", (name, description, price, date_added, status, item_id, self.check_in_count, self.check_out_count)) 
           conn.commit() 
           self.add_item() 
@@ -33,7 +33,7 @@ class B(object):
           stock_in_object = c.execute('SELECT * FROM inventoryStock') 
           stock_in = stock_in_object.fetchall() 
           for i,item_with_its_details in enumerate(stock_in): 
-            print ('%d. %s' % (i+1, item_with_its_details)) 
+            print ('{} {}'.format  (i+1, item_with_its_details)) 
  
  
       def remove_item(self): 
@@ -52,8 +52,12 @@ class B(object):
  
       def list_all_remaining_stock(self):  # done 
         remaining_stock_object = c.execute('SELECT * FROM inventoryStock') 
-        remaining_stock = remaining_stock_object.fetchall() 
-        print(remaining_stock)     
+        remaining_stock = remaining_stock_object.fetchall()
+        for each_item in remaining_stock:
+          stock_item_name = each_item[0]
+          stock_item_status = each_item[4]
+          print('{} {}'.format(stock_item_name, stock_item_status))
+          
  
  
       def item_view_id(self): 
@@ -104,9 +108,4 @@ class B(object):
         search_result = search_result_object.fetchall()
         print('These are the items in the inventory that match your search string')
         for k,results in enumerate(search_result): 
-            print ('%d. %s' % (k+1, results)) 
-
-
-        
-
-  
+            print ('{} {}'.format(k+1, results)) 
