@@ -1,72 +1,102 @@
-import sqlite3
-
-conn = sqlite3.connect('inventoryStock.db')
-c = conn.cursor()
-
-# Create table as the program starts to execute
-c.execute("CREATE TABLE inventoryStock (Name TEXT, ID INTEGER, Description TEXT, Price INTEGER, DateAdded TEXT, Status boolean )")  
+import sqlite3 
+ 
+conn = sqlite3.connect('inventoryStock.db') 
+c = conn.cursor() 
+ 
+# Create table as the program starts to execute 
+c.execute("CREATE TABLE inventoryStock (Name TEXT NOT NULL, Description TEXT NOT NULL, Price INTEGER NOT NULL, DateAdded TEXT NOT NULL, Status boolean NOT NULL, ID INTEGER NOT NULL, checkInTrackerCount INTEGER NULL, checkOutTrackerCount INTEGER NULL)")   
 
 class B(object):
-    def __init__(self):
-      pass
-    
-    def addItem(self):  # done
+  
+  
+      def __init__(self): 
+        self.check_in_count = 0
+        self.check_out_count = 0 
+     
+     
+      def add_item(self):  # done 
+        input_checker = input('Enter another item? (Yes Or No):') 
+        if input_checker == 'Yes' or input_checker == 'YES' or input_checker == 'Y' or input_checker == 'y': 
+          name = input('Enter the gadget name:') 
+          description = input('Enter The Description of the Device:') 
+          price = int(input('Enter The Price of the Device:')) 
+          date_added = input('Date when Device Arrived at Store:') 
+          item_id = int(input('Device ID:')) 
+          self.check_in_count += 1 
+          self.check_out_count = 0 
+          status = True 
+          c.execute("INSERT INTO inventoryStock VALUES (?,?,?,?,?,?,?,?)", (name, description, price, date_added, status, item_id, self.check_in_count, self.check_out_count)) 
+          conn.commit() 
+          self.add_item() 
+           
+        else: 
+          stock_in_object = c.execute('SELECT * FROM inventoryStock') 
+          stock_in = stock_in_object.fetchall() 
+          for i,item_with_its_details in enumerate(stock_in): 
+            print ('%d. %s' % (i+1, item_with_its_details)) 
+ 
+ 
+      def remove_item(self): 
+        item_to_remove = input('enter an item u want to delete:') 
+        if item_to_remove is not '': 
+          item_in_charge = c.execute('SELECT * FROM inventoryStock WHERE Name=(?)', (item_to_remove,)) 
+          final_id = item_in_charge.fetchone() 
+          id_to_item = final_id[5] 
+          c.execute("DELETE FROM inventoryStock WHERE ID=(?)", (id_to_item,)) 
+          conn.commit()  
+          print( 'you have deleted %s' % (item_to_remove)) 
+        else: 
+          print('Please provide an item to delete and try again!') 
+          self.remove_item() 
+ 
+ 
+      def list_all_remaining_stock(self):  # done 
+        remaining_stock_object = c.execute('SELECT * FROM inventoryStock') 
+        remaining_stock = remaining_stock_object.fetchall() 
+        print(remaining_stock)     
+ 
+ 
+      def item_view_id(self): 
+        id_to_search_for = input('enter an ID you would like to search for:') 
+        if id_to_search_for is not '': 
+            all_items_with_id_object = c.execute('SELECT * FROM inventoryStock WHERE ID=(?)', (id_to_search_for,)) 
+            all_items_with_id = all_items_with_id_object.fetchall() 
+            print(all_items_with_id) 
+                   
+        elif id_to_search_for is 'X' or id_to_search_for is 'x': 
+            print('bye') 
+     
+        else: 
+            print('Please type in an ID whose items you want to see and press enter') 
+            self.item_view_id() 
+             
+ 
+      def asset_value_of_inventory(self): 
+        price_list = [] 
+        actual_price_list = [] 
+        price_list_object = c.execute('SELECT Price FROM inventoryStock') 
+        price_list_values = price_list_object.fetchall() 
+        for i in price_list_values: 
+          j = i[0] 
+          price_list.append(j) 
+        total = sum(price_list) 
+        print(total) 
+         
+         
+      def check_in(self, check_in_item): 
+        status = False 
+        c.execute("UPDATE inventoryStock SET Status = (?) WHERE Name = (?)", (status, check_in_item)) 
+        self.check_in_count += 1 
+        c.execute("UPDATE inventoryStock SET checkInTrackerCount = (?) WHERE Name = (?)", (self.check_in_count, check_in_item))
 
+ 
+ 
+      def check_out(self, check_out_item): 
+        status = True 
+        c.execute("UPDATE inventoryStock SET Status = (?) WHERE Name = (?)", (status, check_out_item)) 
+        self.check_out_count += 1 
+        c.execute("UPDATE inventoryStock SET checkOutTrackerCount = (?) WHERE Name = (?)", (self.check_out_count, check_out_item))
+
+
+conn.close( )
         
-        Name = input('Enter the gadget name:')
-        Description = input('Enter The Description of the Device:')
-        Price = int(input('Enter The Price of the Device:'))
-        DateAdded = input('Date when Device Arrived at Store:')
-        Status = False
-        ID = int(input('Device ID:'))
-        c.execute("INSERT INTO inventoryStock VALUES (?,?,?,?,?,?)", (Name, Description, Price, DateAdded, Status, ID))
-
-        conn.commit()
-
-
-    def removeItem(self):
-        itemToRemove = input('enter an item u want to delete:')
-    if itemToRemove is not '':
-        itemInCharge = c.execute('SELECT * FROM inventoryStock WHERE Name=(?)', (itemToRemove,))
-        finalID = itemInCharge.fetchone()
-        IdToItem = finalID[5]
-        c.execute("DELETE FROM inventoryStock WHERE ID=(?)", (IdToItem,))
-        conn.commit() 
-        print( 'you have deleted %s' % (itemToRemove))
-    else:
-        print('Please provide an item to delete and try again!')
-        self.removeItem()
-
-
-
-    def listAllRemainingStock(self):  # done
-        remainingStockObject = c.execute('SELECT * FROM inventoryStock')
-        remainingStock = remainingStockObject.fetchall()
-        print(remainingStock)    
-
-
-    def itemViewId(self):
-        idToSearchFor = input('enter an ID you would like to search for:')
-        if idToSearchFor is not '':
-            allItemsWithIDObject = c.execute('SELECT * FROM inventoryStock WHERE ID=(?)', (idToSearchFor,))
-            allItemsWithID = allItemsWithIDObject.fetchall()
-            print(allItemsWithID)
-                  
-        elif idToSearchFor is 'X' or idToSearchFor is 'x':
-            print('bye')
-    
-        else:
-            print('Please type in an ID whose items you want to see and press enter')
-            self.itemViewId()
-
-
-    def assetValueOfInventory(self):
-        priceList = []
-        priceListObject = c.execute('SELECT Price FROM inventoryStock')
-        priceListValues = priceListObject.fetchall()
-        for i in priceListValues:
-          j = i[0]
-          priceList.append(j)
-        total = sum(priceList)
-        print(total)
-       
