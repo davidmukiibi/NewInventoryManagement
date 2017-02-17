@@ -86,9 +86,9 @@ class InventoryCLI(cmd.Cmd):
 
     @docopt_cmd
     def do_remove(self, arg):
-        """Usage: remove <item_name>"""
-        item_to_remove = arg["<item_name>"]
-        inventory.remove_item()
+        """Usage: remove <item_id>"""
+        id = arg["<item_id>"]
+        inventory.remove_item(id)
 
     @docopt_cmd
     def do_list(self, arg):
