@@ -2,13 +2,13 @@
 Usage:
     inventory add <name> <description> <price> <date_added> <item_id>
     inventory remove <item_name>
-    inventory list [--export]
-    inventory checkout <item_id>
-    inventory checkin <item_id>
+    inventory list
+    inventory check_out <item_id>
+    inventory check_in <item_id>
     inventory item_view <item_id>
-    inventory search <item_name>
+    inventory search_inventory <item_name>
     inventory assetvalue
-    inventory list_export
+    inventory list_export <filename>
     inventory export
     inventory 
     inventory (-i | --interactive)
@@ -110,7 +110,7 @@ class InventoryCLI(cmd.Cmd):
     def do_check_in(self, arg):
         """Usage: checkin <item_id>"""
         check_in_item_id = arg["<item_id>"]
-        inventory.check_in(check_in_item_id)
+        inventory.check_in_item(check_in_item_id)
 
     @docopt_cmd
     def do_check_out(self, arg):

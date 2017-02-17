@@ -4,7 +4,7 @@ This program helps you to add items to your inventory database, delete items, se
 
 ### Code Example
 
-add <"iphone"> <"this is from apple in the US"> <1200> <12-12-2012> <33232>     note: arguments entered in <here>, are  
+add <"iphone"> <"this is from apple in the US"> <1200> <12-12-2012> <33232>     note: arguments are entered in these fields --> <>  
 
 ### Motivation
 

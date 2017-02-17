@@ -78,9 +78,10 @@ class Inventory(object):
             j = i[0]
             price_list.append(j)
         total = sum(price_list)
-        print(price_list)
+        print('Your inventory is worth')
+        print(total)
 
-    def check_in(self, check_in_item_id):
+    def check_in_item(self, check_in_item_id):
 
         check_in_item_object = c.execute(
             "SELECT Name FROM inventoryStock WHERE ID = (?)", (check_in_item_id,))
