@@ -12,7 +12,7 @@ It was not an easy task, but the promise i made to myself to see this through wa
 
 ### Installation
 
-Run the command below to call the app
+Run the command in yo CMD below to call the app
 ```python
 python app.py -i
 
