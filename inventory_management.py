@@ -27,7 +27,7 @@ class Inventory(object):
                                                                           price, date_added, item_id, self.status, self.check_in_count, self.check_out_count))
 
         conn.commit()
-        conn.close()
+        
 
         print('Successfully added')
 
@@ -131,13 +131,11 @@ class Inventory(object):
 
             print('{} {}'.format(k + 1, results))
 
-    def list_export(self):
-        with open('inventory.csv', 'w') as csvfile:
-            fieldnames = ['Name', 'Description',
-                          'Price', 'Date Added', 'Item ID']
-            stock_left = self.list_all_remaining_stock()
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writeheader()
-            for i in stock_left:
-                writer.writerow({'Name': i[0], 'Description': i[1], 'Price': i[
-                                2], 'Date Added': i[3], 'Item ID': i[4]})
+    def list_export(self, filename='friday'):
+        stock_left = c.execute('SELECT * FROM inventoryStock')
+        with open(filename +'.csv', 'w') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(['Name', 'Description', 'Price' 'Date Added', 'Item ID', 'Check Count', 'Checkout Count'])
+            writer.writerows(stock_left)
+            print("Inventory successfully exported as a CSV file!")
+        conn.commit()

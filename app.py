@@ -120,8 +120,9 @@ class InventoryCLI(cmd.Cmd):
 
     @docopt_cmd
     def do_list_export(self, arg):
-        """Usage: list_export"""
-        inventory.list_export()
+        """Usage: list_export <filename>"""
+        filename = arg["<filename>"]
+        inventory.list_export(filename)
 
     @docopt_cmd
     def do_search_inventory(self, arg):
